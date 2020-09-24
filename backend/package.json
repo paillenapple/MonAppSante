@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "MonAppSante backend files",
+  "main": "server.js",
   "dependencies": {
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
@@ -12,9 +13,8 @@
     "mongoose": "^5.10.5",
     "mongoose-unique-validator": "^2.0.3"
   },
-  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon start"
   },
   "author": "Silvère MAZIERE"
 }
