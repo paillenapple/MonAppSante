@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "description": "MonAppSante frontend files",
   "dependencies": {
     "@reduxjs/toolkit": "^1.1.0",
     "axios": "^0.20.0",
@@ -37,5 +38,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "author": "Silvère MAZIERE"
 }
