@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 const InputError = ({message}) => {
   return (
@@ -10,8 +10,7 @@ const InputError = ({message}) => {
 export default InputError;
 
 const StyledSpan = styled.span`
-  font-weight: 400;
   font-size: .8rem;
   font-style: italic;
-  color: red;
+  color: var(--color-error);
 `

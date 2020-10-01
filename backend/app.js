@@ -1,7 +1,8 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+const formData = require("express-form-data");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/user");
+const patientRoutes = require("./routes/patient");
 
 const app = express();
 
@@ -29,8 +30,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(bodyParser.json());
+app.use(formData.parse());
 
 app.use("/api/auth", userRoutes);
+
+app.use("/api/patients", patientRoutes);
 
 module.exports = app;

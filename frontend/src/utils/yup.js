@@ -27,12 +27,16 @@ const signupPayloadSchema = yup.object().shape({
       [yup.ref("password1"), null],
       "Les mots de passe doivent être identiques"
     ),
-    firstname: yup
-    .string()
-    .required("Ce champ est obligatoire"),
-    surname: yup
-    .string()
-    .required("Ce champ est obligatoire"),
+  firstname: yup.string().required("Ce champ est obligatoire"),
+  surname: yup.string().required("Ce champ est obligatoire"),
 });
 
-export { loginPayloadSchema, signupPayloadSchema };
+const newPatientPayloadSchema = yup.object().shape({
+  firstname: yup.string().required("Ce champ est obligatoire"),
+  surname: yup.string().required("Ce champ est obligatoire"),
+  dob: yup.date().required("Ce champ est obligatoire"),
+});
+
+
+
+export { loginPayloadSchema, signupPayloadSchema, newPatientPayloadSchema };

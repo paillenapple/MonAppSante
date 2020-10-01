@@ -1,26 +1,48 @@
 @import-normalize;
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Source+Sans+Pro:wght@700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap");
 
 :root {
   --color-white: hsl(0, 0%, 100%);
-  --color-primary: hsl(40, 90%, 56%);
-  --text-color-primary: hsl(0, 0%, 17%);
+  --color-primary: hsl(169, 21%, 54%);
+  --color-primary-light: hsl(169, 17%, 96%);
+  --color-secondary: hsl(40, 75%, 62%);
+  --color-secondary-hover: hsl(40, 75%, 55%);
+  --text-color: hsl(93, 7%, 10%);
+  --color-error: hsl(0, 70%, 45%);
+
+  --box-shadow-1: 0 3px 3px hsla(169, 17%, 61%, 0.24);
 }
 
 html {
   font-weight: 400;
   font-size: 16px;
   font-family: "Open Sans", sans-serif;
+  color: var(--text-color);
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
 }
 
-h1, h2, h3 {
-  font-weight: 700;
-  font-family: "Source Sans Pro", sans-serif;
+h1,
+h2,
+h3 {
   margin: 0;
+}
+
+h1 {
+  font-size: 1.2rem;
+}
+
+h2 {
+  font-size: 1.1rem;
 }
 
 a {
@@ -38,12 +60,27 @@ button {
   font: inherit;
   background: transparent;
   color: inherit;
+  cursor: pointer;
   padding: 0;
   border: none;
 }
 
+input {
+  font: inherit;
+}
+
+.bold {
+  font-weight: 700;
+}
+
 .underline {
   text-decoration: underline;
+}
+
+@supports (text-underline-offset: 0.2rem) {
+  .underline {
+    text-underline-offset: 0.2rem;
+  }
 }
 
 #root {
@@ -51,4 +88,181 @@ button {
   flex-direction: column;
   min-height: 100vh;
   background: var(--color-white);
+}
+
+.pad-1 {
+  padding: 7.5px;
+}
+
+.pad-2 {
+  padding: 15px;
+}
+
+.pad-3 {
+  padding: 30px;
+}
+
+.pad-4 {
+  padding: 45px;
+}
+
+.pad-5 {
+  padding: 60px;
+}
+
+.nfc-mt-1 > :not(:first-child) {
+  margin-top: 7.5px;
+}
+
+.nfc-mt-2 > :not(:first-child) {
+  margin-top: 15px;
+}
+
+.nfc-mt-3 > :not(:first-child) {
+  margin-top: 30px;
+}
+
+.nfc-mt-4 > :not(:first-child) {
+  margin-top: 45px;
+}
+
+.nfc-mt-5 > :not(:first-child) {
+  margin-top: 60px;
+}
+
+.nfc-ml-1 > :not(:first-child) {
+  margin-left: 7.5px;
+}
+
+.nfc-ml-2 > :not(:first-child) {
+  margin-left: 15px;
+}
+
+.nfc-ml-3 > :not(:first-child) {
+  margin-left: 30px;
+}
+
+.nfc-ml-4 > :not(:first-child) {
+  margin-left: 45px;
+}
+
+.nfc-ml-5 > :not(:first-child) {
+  margin-left: 60px;
+}
+
+/* Flex classes */
+
+/* Flex context class */
+
+.flex {
+  display: flex;
+}
+
+.i-flex {
+  display: inline-flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+/* Flex column context class */
+
+.flex-col {
+  flex-direction: column;
+}
+
+/* Flex align-self classes */
+
+.flex-ass {
+  align-self: stretch;
+}
+
+.flex-asfs {
+  align-self: flex-start;
+}
+
+.flex-asc {
+  align-self: center;
+}
+
+.flex-asfe {
+  align-self: flex-end;
+}
+
+/* Flex justify-content classes */
+
+.flex-jcs {
+  justify-content: stretch;
+}
+
+.flex-jcc {
+  justify-content: center;
+}
+
+.flex-jcfe {
+  justify-content: flex-end;
+}
+
+.flex-jcsb {
+  justify-content: space-between;
+}
+
+.flex-jcsa {
+  justify-content: space-around;
+  justify-content: space-evenly;
+}
+
+/* Flex align-items classes */
+
+.flex-aifs {
+  align-items: flex-start;
+}
+
+.flex-aic {
+  align-items: center;
+}
+
+.flex-aife {
+  align-items: flex-end;
+}
+
+/* Horizontally, vertically and both axes centering in flex row / column contexts */
+
+.flex-row-hc {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-row-vc {
+  display: flex;
+  align-items: center;
+}
+
+.flex-row-c {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-col-hc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-col-vc {
+  display: flex;
+  justify-content: column;
+}
+
+.flex-col-c {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

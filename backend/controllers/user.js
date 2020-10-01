@@ -1,16 +1,21 @@
 const bcrypt = require("bcrypt");
 const User = require("./../models/user");
 const jwt = require("jsonwebtoken");
+const {
+  capFirstLetter,
+  uppercase,
+  lowercase,
+} = require("./../utils/dataParsing");
 
 exports.signup = (req, res, next) => {
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
       const user = new User({
-        email: req.body.email,
+        email: lowercase(req.body.email),
         password: hash,
-        firstname: req.body.firstname,
-        surname: req.body.surname,
+        firstname: capFirstLetter(req.body.firstname),
+        surname: uppercase(req.body.surname),
       });
       user
         .save()
@@ -33,15 +38,15 @@ exports.login = (req, res, next) => {
             return res.status(401).json({ error: "Mot de passe incorrect !" });
           }
           res.status(200).json({
-            message: `Vous êtes maintenant connecté(e), ${user.firstname}${" "}${user.surname}`,
             userId: user._id,
+            email: lowercase(user.email),
             token: jwt.sign(
               { userId: user._id },
               process.env.JWT_SECRET_STRING,
               { expiresIn: "24h" }
             ),
-            firstname: user.firstname,
-            surname: user.surname,
+            firstname: capFirstLetter(user.firstname),
+            surname: uppercase(user.surname),
           });
         })
         .catch((error) => res.status(500).json({ error }));
@@ -51,10 +56,12 @@ exports.login = (req, res, next) => {
 
 exports.getUserInfos = (req, res, next) => {
   User.findOne({ _id: req.params.id })
-    .then((user) => res.status(200).json({
-      userId: user._id,
-      firstname: user.firstname,
-      surname: user.surname,
-    }))
+    .then((user) =>
+      res.status(200).json({
+        userId: user._id,
+        firstname: capFirstLetter(user.firstname),
+        surname: uppercase(user.surname),
+      })
+    )
     .catch((error) => res.status(404).json({ error }));
 };
