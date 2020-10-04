@@ -1,6 +1,6 @@
 import React from "react";
 import { MainTemplate, UserDesktopTemplate } from "../../../templates";
-import { Loader, MultiSwitch } from "../..";
+import { Loader, MultiSwitch } from "./../../business-components";
 import { formatDate } from "../../../utils/dataParsing";
 
 const ReadOne = (props) => {

@@ -13,6 +13,10 @@
   --box-shadow-1: 0 3px 3px hsla(169, 17%, 61%, 0.24);
 }
 
+*:focus {
+  outline: 1px dashed var(--text-color);
+}
+
 html {
   font-weight: 400;
   font-size: 16px;
@@ -81,6 +85,16 @@ input {
   .underline {
     text-underline-offset: 0.2rem;
   }
+}
+
+.visually-hidden:not(:focus):not(:active) {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }
 
 #root {

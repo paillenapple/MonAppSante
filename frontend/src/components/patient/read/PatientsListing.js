@@ -15,7 +15,8 @@ import styled from "styled-components/macro";
 import Pagination from "rc-pagination";
 import frFR from "rc-pagination/lib/locale/fr_FR";
 import { MainTemplate, UserDesktopTemplate } from "../../../templates";
-import { Loader, ReadOne, WriteOne } from "../..";
+import { ReadOne, WriteOne } from "../..";
+import {Loader} from "./../../business-components";
 import {
   ChevronLeft,
   ChevronRight,

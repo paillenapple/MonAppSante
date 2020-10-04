@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Formik } from "formik";
-import styled from "styled-components/macro";
-import { InputError } from "../..";
-import { newPatientPayloadSchema } from "../../../utils/yup";
 import {
   displayLoader,
   hideLoader,
   selectIsLoading,
 } from "../../../features/loader/loaderSlice";
-import Loader from "../../business-components/Loader";
+import { Redirect } from "react-router-dom";
+import styled from "styled-components/macro";
+import { Formik } from "formik";
+import { TextInput, DateInput, Loader } from "./../../business-components";
+import { newPatientPayloadSchema } from "../../../utils/yup";
 
 const NewPatientForm = () => {
   const [redirect, setRedirection] = useState(false);
@@ -37,7 +36,7 @@ const NewPatientForm = () => {
       });
   };
   if (redirect) {
-    return <Redirect to="/userdesktop" />;
+    return <Redirect to="/read" />;
   }
   return (
     <>
@@ -52,57 +51,52 @@ const NewPatientForm = () => {
           validationSchema={newPatientPayloadSchema}
           onSubmit={(values) => handleFormSubmit(values)}
         >
-          {({ values, errors, touched, handleChange, handleSubmit }) => (
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleSubmit,
+            setFieldValue,
+          }) => (
             <StyledForm
-              className="flex flex-col flex-aic nfc-mt-4 pad-3"
+              className="flex flex-col flex-aic nfc-mt-3 pad-3"
               id="newpatient-form"
               name="newpatient-form"
+              noValidate={true}
               onSubmit={handleSubmit}
+              spellCheck={false}
             >
               <div className="flex flex-col nfc-mt-3">
-                <Wrapper1 className="flex flex-col nfc-mt-1">
-                  <StyledLabel htmlFor="firstname">Prénom</StyledLabel>
-                  <StyledInput
-                    autoFocus
-                    form="newpatient-form"
-                    id="firstname"
-                    name="firstname"
-                    onChange={handleChange}
-                    type="text"
-                    value={values.firstname}
-                  />
-                  {errors.firstname && touched.firstname ? (
-                    <InputError message={errors.firstname} />
-                  ) : null}
-                </Wrapper1>
-                <Wrapper1 className="flex flex-col nfc-mt-1">
-                  <StyledLabel htmlFor="surname">Nom</StyledLabel>
-                  <StyledInput
-                    form="newpatient-form"
-                    id="surname"
-                    name="surname"
-                    onChange={handleChange}
-                    type="text"
-                    value={values.surname}
-                  />
-                  {errors.surname && touched.surname ? (
-                    <InputError message={errors.surname} />
-                  ) : null}
-                </Wrapper1>
-                <Wrapper1 className="flex flex-col nfc-mt-1">
-                  <StyledLabel htmlFor="dob">Date de naissance</StyledLabel>
-                  <StyledInput
-                    form="newpatient-form"
-                    id="dob"
-                    name="dob"
-                    onChange={handleChange}
-                    type="date"
-                    value={values.dob}
-                  />
-                  {errors.dob && touched.dob ? (
-                    <InputError message={errors.dob} />
-                  ) : null}
-                </Wrapper1>
+                <TextInput
+                  autoFocus
+                  form="newpatient-form"
+                  id="firstname"
+                  label="Prénom"
+                  onChange={handleChange}
+                  values={values}
+                  errors={errors}
+                  touched={touched}
+                />
+                <TextInput
+                  form="newpatient-form"
+                  id="surname"
+                  label="Nom de famille"
+                  onChange={handleChange}
+                  values={values}
+                  errors={errors}
+                  touched={touched}
+                />
+                <DateInput
+                  form="newpatient-form"
+                  id="dob"
+                  label="Date de naissance"
+                  onChange={handleChange}
+                  values={values}
+                  errors={errors}
+                  touched={touched}
+                  setFieldValue={setFieldValue}
+                />
               </div>
               <StyledButton type="submit">Envoyer</StyledButton>
             </StyledForm>
@@ -120,21 +114,6 @@ const StyledForm = styled.form`
   color: var(--text-color);
   border-radius: 2px;
   box-shadow: var(--box-shadow-1);
-`;
-
-const Wrapper1 = styled.div`
-  width: 360px;
-  max-width: 100%;
-`;
-
-const StyledLabel = styled.label`
-  font: 700 0.9rem "Open Sans", sans-serif;
-`;
-
-const StyledInput = styled.input`
-  padding: 6px;
-  border: 1px solid var(--text-color);
-  border-radius: 2px;
 `;
 
 const StyledButton = styled.button`

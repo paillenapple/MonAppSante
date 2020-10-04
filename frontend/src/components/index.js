@@ -1,7 +1,3 @@
-import InputError from "./business-components/InputError";
-import Loader from "./business-components/Loader";
-import MultiSwitch from "./business-components/MultiSwitch";
-
 import Home from "./Home";
 import UserDesktop from "./UserDesktop";
 
@@ -20,9 +16,6 @@ import PatientsListing from "./patient/read/PatientsListing";
 import ReadOne from "./patient/read/ReadOne";
 
 export {
-  InputError,
-  Loader,
-  MultiSwitch,
   Home,
   UserDesktop,
   Footer,

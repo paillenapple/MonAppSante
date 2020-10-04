@@ -6,7 +6,8 @@ import {
   selectIsLoading,
 } from "./../../features/loader/loaderSlice";
 import { Redirect } from "react-router-dom";
-import { Loader, SignupForm } from "./../../components";
+import { SignupForm } from "./../../components";
+import { Loader } from "./../business-components";
 
 const Signup = () => {
   const isLoading = useSelector(selectIsLoading);

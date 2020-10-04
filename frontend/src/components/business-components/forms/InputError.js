@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components/macro";
 
-const InputError = ({message}) => {
+const InputError = ({className, message}) => {
   return (
-    <StyledSpan>{message}</StyledSpan>
+    <StyledSpan className={className}>{message}</StyledSpan>
   )
 }
 

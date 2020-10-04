@@ -34,9 +34,7 @@ const signupPayloadSchema = yup.object().shape({
 const newPatientPayloadSchema = yup.object().shape({
   firstname: yup.string().required("Ce champ est obligatoire"),
   surname: yup.string().required("Ce champ est obligatoire"),
-  dob: yup.date().required("Ce champ est obligatoire"),
+  dob: yup.date().nullable().required("Ce champ est obligatoire"),
 });
-
-
 
 export { loginPayloadSchema, signupPayloadSchema, newPatientPayloadSchema };

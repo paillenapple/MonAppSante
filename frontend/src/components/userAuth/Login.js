@@ -7,7 +7,8 @@ import {
 } from "../../features/loader/loaderSlice";
 import { loginUser, currentUser } from "../../features/user/userSlice";
 import { Redirect } from "react-router-dom";
-import { Loader, LoginForm } from "..";
+import { LoginForm } from "..";
+import { Loader } from "./../business-components";
 
 const Login = () => {
   const dispatch = useDispatch();
