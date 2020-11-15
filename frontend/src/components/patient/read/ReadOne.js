@@ -1,10 +1,9 @@
 import React from "react";
 import { MainTemplate, UserDesktopTemplate } from "../../../templates";
-import { Loader, MultiSwitch } from "./../../business-components";
-import { formatDate } from "../../../utils/dataParsing";
+import { MultiSwitch } from "./../../business-components";
 
 const ReadOne = (props) => {
-  const { location, patient, stoppedLoading } = props;
+  const { location, patient } = props;
   const { pathname } = location;
   return (
     <MainTemplate
@@ -16,17 +15,12 @@ const ReadOne = (props) => {
           pathname={pathname}
           title="Informations patient"
         >
-          {!stoppedLoading ? (
-            <Loader />
-          ) : (
-            <>
-              <h2>
-                {patient.firstname} {patient.surname}, né(e) le{" "}
-                {formatDate(patient.dob, "dd/MM/yyyy")}
-              </h2>
-              <div>Fetched !</div>
-            </>
-          )}
+          <>
+            <h2>
+              {patient.firstname} {patient.surname}, né(e) le {patient.dob}
+            </h2>
+            <div>Fetched !</div>
+          </>
         </UserDesktopTemplate>
       }
       {...props}

@@ -18,11 +18,12 @@ const FormTextInput = (props) => {
         id={props.id}
         name={props.id}
         onChange={props.onChange}
+        readOnly={props.readOnly}
         type="text"
         value={props.values[props.id]}
         errorStatus={props.errors[props.id] && props.touched[props.id]}
       />
-      {props.errors[props.id] && props.touched[props.id] ? (
+      {props.errors[props.id] ? (
         <StyledInputError message={props.errors[props.id]} />
       ) : null}
     </Wrapper1>
@@ -51,6 +52,10 @@ const StyledInput = styled.input`
       props.errorStatus
         ? "1px dashed var(--color-error)"
         : "1px dashed var(--text-color)"};
+  }
+
+  &:read-only {
+    background: var(--color-light-grey);
   }
 `;
 

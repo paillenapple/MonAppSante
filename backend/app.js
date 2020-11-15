@@ -3,6 +3,7 @@ const formData = require("express-form-data");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/user");
 const patientRoutes = require("./routes/patient");
+const jobRoutes = require("./routes/job");
 
 const app = express();
 
@@ -35,5 +36,7 @@ app.use(formData.parse());
 app.use("/api/auth", userRoutes);
 
 app.use("/api/patients", patientRoutes);
+
+app.use("/api/job", jobRoutes);
 
 module.exports = app;

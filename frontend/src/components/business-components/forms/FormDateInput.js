@@ -14,7 +14,7 @@ const FormDateInput = (props) => {
         {props.label}
       </StyledLabel>
       <DateInput {...props} />
-      {props.errors[props.id] && props.touched[props.id] ? (
+      {props.errors[props.id] ? (
         <StyledInputError message={props.errors[props.id]} />
       ) : null}
     </Wrapper1>

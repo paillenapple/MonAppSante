@@ -10,6 +10,7 @@ const LoginForm = ({ handleFormSubmit }) => {
       initialValues={{ email: "", password: "" }}
       onSubmit={(values) => handleFormSubmit(values)}
       validationSchema={loginPayloadSchema}
+      validateOnChange={false}
     >
       {({ values, errors, touched, handleChange, handleSubmit }) => (
         <StyledForm

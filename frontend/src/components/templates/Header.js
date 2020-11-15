@@ -11,19 +11,26 @@ const Header = ({ location }) => {
   return (
     <StyledHeader className="flex flex-jcsb flex-aic nfc-ml-3 pad-3">
       {pathname === "/" ? (
-        <span>App Santé</span>
+        <span>PédiaJob</span>
       ) : (
         <span>
-          <Link to="/">App Santé</Link>
+          <Link to="/">PédiaJob</Link>
         </span>
       )}
       {appCurrentUser.token ? (
         <div className="flex flex-aic nfc-ml-3">
-          <Link to="/userdesktop">
+          {pathname !== "/userdesktop" ? (
+            <Link to="/userdesktop">
+              <span>
+                {appCurrentUser.firstname} {appCurrentUser.surname}
+              </span>
+            </Link>
+          ) : (
             <span>
               {appCurrentUser.firstname} {appCurrentUser.surname}
             </span>
-          </Link>
+          )}
+
           <StyledButton type="button" onClick={() => dispatch(logoutUser())}>
             Se déconnecter
           </StyledButton>

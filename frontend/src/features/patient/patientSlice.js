@@ -7,7 +7,7 @@ export const patientSlice = createSlice({
     currentPatient: {}
   },
   reducers: {
-    storeAllPatients: (state, action) => {
+    storeCurrentPagePatients: (state, action) => {
       state.patients = action.payload;
     },
     storeCurrentPatient: (state, action) => {
@@ -16,7 +16,7 @@ export const patientSlice = createSlice({
   },
 });
 
-export const { storeAllPatients, storeCurrentPatient } = patientSlice.actions;
+export const { storeCurrentPagePatients, storeCurrentPatient } = patientSlice.actions;
 
 export const patients = (state) => state.patient.patients;
 export const currentPatient = (state) => state.patient.currentPatient;

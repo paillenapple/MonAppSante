@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  displayLoader,
-  hideLoader,
-  selectIsLoading,
-} from "../../../features/loader/loaderSlice";
-import {
-  storeAllPatients,
+  storeCurrentPagePatients,
   patients,
   storeCurrentPatient,
   currentPatient,
@@ -15,8 +10,8 @@ import styled from "styled-components/macro";
 import Pagination from "rc-pagination";
 import frFR from "rc-pagination/lib/locale/fr_FR";
 import { MainTemplate, UserDesktopTemplate } from "../../../templates";
-import { ReadOne, WriteOne } from "../..";
-import {Loader} from "./../../business-components";
+import PatientFolder from "./PatientFolder";
+import { Loader } from "./../../business-components";
 import {
   ChevronLeft,
   ChevronRight,
@@ -25,89 +20,79 @@ import {
   File,
   Edit2,
 } from "react-feather";
-import { formatDate, sortAlphabetically } from "../../../utils/dataParsing";
 
 const PatientsListing = (props) => {
   const dispatch = useDispatch();
-  const isLoading = useSelector(selectIsLoading);
-  const allPatients = useSelector(patients);
+  const currentPagePatients = useSelector(patients);
   const onePatient = useSelector(currentPatient);
-  const [fetchAllIsDone, toggleFetchAllStatus] = useState(false);
-  const [fetchOneIsDone, toggleFetchOneStatus] = useState(false);
-  const [currentPagePatients, updateCurrentPagePatients] = useState([]);
-  const [selectedPatientId, updateSelectedPatientId] = useState("");
+  const [isLoading, toggleLoadingStatus] = useState(true);
+  const [patientEdited, triggerFetchAfterEdition] = useState(false);
+  const [totalPatients, updateTotalPatients] = useState("");
   const [mode, switchMode] = useState("readAll");
-  const [currentPage, changeCurrentPage] = useState(1);
+  const [currentPage, updateCurrentPage] = useState(1);
+  const [paginationOffset, updatePaginationOffset] = useState(0);
   const pageSize = 10;
   const { pathname } = props.location;
 
   const switchDisplayMode = (mode, id = null) => {
     switchMode(mode);
+    if (id === null) {
+      dispatch(storeCurrentPatient({}));
+    }
     if (id !== null) {
-      updateSelectedPatientId(id);
+      const patient = currentPagePatients.find((patient) => patient._id === id);
+      dispatch(storeCurrentPatient(patient));
     }
   };
 
+  // fetch du nombre total de patients à l'affichage de la page
+
   useEffect(() => {
     const abortController = new AbortController();
-    const fetchAllPatients = () => {
-      dispatch(displayLoader());
-      fetch(`${process.env.REACT_APP_APIBASEURL}/api/patients/readall`, {
+    const fetchTotalPatients = () => {
+      const url = new URL(
+        `${process.env.REACT_APP_APIBASEURL}/api/patients/count-total-number-patients`
+      );
+      fetch(url, {
         method: "GET",
         signal: abortController.signal,
       })
         .then((response) => response.json())
-        .then((data) => {
-          dispatch(storeAllPatients(data));
-          dispatch(hideLoader());
-          toggleFetchAllStatus(true);
+        .then((total) => {
+          updateTotalPatients(total);
         })
-        .catch((error) => {
-          dispatch(hideLoader());
-          toggleFetchAllStatus(true);
-        });
+        .catch((error) => {});
     };
-    fetchAllPatients();
+    fetchTotalPatients();
     return () => {
       abortController.abort();
     };
-  }, [dispatch]);
+  }, []);
+
+  // fetch des patients affichés sur la page active
 
   useEffect(() => {
-    updateCurrentPagePatients(
-      sortAlphabetically(allPatients, "surname").slice(0, 10)
-    );
-  }, [allPatients]);
-
-  useEffect(() => {
-    if (mode === "readOne" || mode === "writeOne") {
-      const abortController2 = new AbortController();
-      const fetchPatient = () => {
-        dispatch(displayLoader());
-        fetch(
-          `${process.env.REACT_APP_APIBASEURL}/api/patients/readone/${selectedPatientId}`,
-          {
-            method: "GET",
-            signal: abortController2.signal,
-          }
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            dispatch(storeCurrentPatient(data));
-            dispatch(hideLoader());
-            toggleFetchOneStatus(true);
-          })
-          .catch((error) => {
-            dispatch(hideLoader());
-            toggleFetchOneStatus(true);
-          });
-      };
-      fetchPatient();
-      return () => {
-        abortController2.abort();
-      };
-    }
-  }, [dispatch, selectedPatientId, mode]);
+    const abortController2 = new AbortController();
+    const fetchCurrentPagePatients = () => {
+      const url = new URL(
+        `${process.env.REACT_APP_APIBASEURL}/api/patients/read-current-page-patients?limit=${pageSize}&offset=${paginationOffset}&sortBy=surname&order=1`
+      );
+      fetch(url, {
+        method: "GET",
+        signal: abortController2.signal,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          dispatch(storeCurrentPagePatients(data));
+        })
+        .catch((error) => {})
+        .finally(() => toggleLoadingStatus(false));
+    };
+    fetchCurrentPagePatients();
+    return () => {
+      abortController2.abort();
+    };
+  }, [dispatch, paginationOffset, patientEdited]);
 
   return (
     <>
@@ -115,10 +100,10 @@ const PatientsListing = (props) => {
         <MainTemplate
           component={
             <UserDesktopTemplate title="Liste des patients" pathname={pathname}>
-              {(isLoading || !fetchAllIsDone) && <Loader />}
-              {!isLoading && fetchAllIsDone && (
+              {isLoading && <Loader />}
+              {!isLoading && (
                 <>
-                  {currentPagePatients.length > 0 ? (
+                  {totalPatients > 0 && currentPagePatients.length > 0 ? (
                     <>
                       <StyledTable>
                         <thead>
@@ -135,7 +120,7 @@ const PatientsListing = (props) => {
                             <tr key={patient._id}>
                               <td>{patient.surname}</td>
                               <td>{patient.firstname}</td>
-                              <td>{formatDate(patient.dob, "dd/MM/yyyy")}</td>
+                              <td>{patient.dob}</td>
                               <td className="center">
                                 <button
                                   onClick={() =>
@@ -162,22 +147,20 @@ const PatientsListing = (props) => {
                       </StyledTable>
                       <PaginationWrapper>
                         <Pagination
-                          total={allPatients.length}
+                          total={totalPatients}
                           current={currentPage}
                           pageSize={pageSize}
                           onChange={(current, pageSize) => {
-                            updateCurrentPagePatients(
-                              sortAlphabetically(allPatients, "surname").slice(
-                                (current - 1) * pageSize,
-                                (current - 1) * pageSize + pageSize
-                              )
-                            );
-                            changeCurrentPage(current);
+                            toggleLoadingStatus(true);
+                            updatePaginationOffset(pageSize * (current - 1));
+                            updateCurrentPage(current);
                           }}
                           hideOnSinglePage={true}
                           locale={frFR}
                           className="rc-pagination"
-                          prevIcon={<ChevronLeft size={30} />}
+                          prevIcon={
+                            <ChevronLeft color="hsl(238, 17%, 36%)" size={30} />
+                          }
                           nextIcon={
                             <ChevronRight
                               color="hsl(238, 17%, 36%)"
@@ -209,18 +192,16 @@ const PatientsListing = (props) => {
           {...props}
         />
       )}
-      {mode === "readOne" && (
-        <ReadOne
-          patient={onePatient}
+      {mode !== "readAll" && (
+        <PatientFolder
           handleSwitchClick={(mode) => switchDisplayMode(mode)}
-          stoppedLoading={!isLoading && fetchOneIsDone ? true : false}
-          {...props}
-        />
-      )}
-      {mode === "writeOne" && (
-        <WriteOne
+          switchDisplayMode={(mode) => {
+            switchDisplayMode(mode);
+            triggerFetchAfterEdition((patientEdited) => !patientEdited);
+          }}
+          toggleLoadingStatus={(bool) => toggleLoadingStatus(bool)}
+          mode={mode}
           patient={onePatient}
-          stoppedLoading={!isLoading && fetchOneIsDone ? true : false}
           {...props}
         />
       )}

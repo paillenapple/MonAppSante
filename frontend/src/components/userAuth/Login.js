@@ -26,6 +26,7 @@ const Login = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data)
         dispatch(loginUser(data));
         dispatch(hideLoader());
       })

@@ -1,5 +1,7 @@
 import Home from "./Home";
-import UserDesktop from "./UserDesktop";
+import UserRecruiterDesktop from "./UserRecruiterDesktop";
+import UserSeekerDesktop from "./UserSeekerDesktop";
+import Email from "./Email";
 
 import Footer from "./templates/Footer";
 import Header from "./templates/Header";
@@ -15,9 +17,17 @@ import WriteOne from "./patient/edit/WriteOne";
 import PatientsListing from "./patient/read/PatientsListing";
 import ReadOne from "./patient/read/ReadOne";
 
+import SeekerSearchJob from "./jobSeeker/SearchJob";
+import SeekerOneJob from "./jobSeeker/SeekerOneJob";
+import SeekerAssignments from "./jobSeeker/Assignments";
+
+import RecruiterPost from "./recruiter/Post";
+import RecruiterAssignments from "./recruiter/Assignments";
+
 export {
   Home,
-  UserDesktop,
+  UserRecruiterDesktop,
+  UserSeekerDesktop,
   Footer,
   Header,
   Login,
@@ -29,4 +39,10 @@ export {
   WriteOne,
   PatientsListing,
   ReadOne,
+  SeekerSearchJob,
+  SeekerOneJob,
+  SeekerAssignments,
+  RecruiterPost,
+  RecruiterAssignments,
+  Email
 };

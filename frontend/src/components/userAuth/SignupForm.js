@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Formik } from "formik";
-import { PasswordInput, TextInput } from "./../business-components";
+import { PasswordInput, TextInput, RadioFieldsetInput } from "./../business-components";
 import { signupPayloadSchema } from "../../utils/yup";
 
 const SignupForm = ({ handleFormSubmit }) => {
@@ -13,9 +13,12 @@ const SignupForm = ({ handleFormSubmit }) => {
         password2: "",
         firstname: "",
         surname: "",
+        status: "",
+        city: "",
       }}
       onSubmit={(values) => handleFormSubmit(values)}
       validationSchema={signupPayloadSchema}
+      validateOnChange={false}
     >
       {({ values, errors, touched, handleChange, handleSubmit }) => (
         <StyledForm
@@ -33,7 +36,7 @@ const SignupForm = ({ handleFormSubmit }) => {
               form="signup-form"
               id="email"
               label="Adresse électronique"
-              onChange={handleChange}              
+              onChange={handleChange}
               touched={touched}
               values={values}
             />
@@ -42,7 +45,7 @@ const SignupForm = ({ handleFormSubmit }) => {
               form="signup-form"
               id="password1"
               label="Mot de passe"
-              onChange={handleChange}              
+              onChange={handleChange}
               touched={touched}
               values={values}
             />
@@ -61,7 +64,7 @@ const SignupForm = ({ handleFormSubmit }) => {
               form="signup-form"
               id="firstname"
               label="Prénom"
-              onChange={handleChange}              
+              onChange={handleChange}
               touched={touched}
               values={values}
             />
@@ -75,6 +78,40 @@ const SignupForm = ({ handleFormSubmit }) => {
               touched={touched}
               values={values}
             />
+            <RadioFieldsetInput
+              errors={errors}
+              fields={[
+                {
+                  id: "status1",
+                  value: "demandeur",
+                  label: "Je cherche un remplacement",
+                },
+                {
+                  id: "status2",
+                  value: "recruteur",
+                  label: "Je propose un remplacement",
+                },
+              ]}
+              form="signup-form"
+              legend="Choisissez"
+              name="status"
+              onChange={handleChange}
+              touched={touched}
+              values={values}
+            />
+
+            {values.status && values.status === "recruteur" && (
+              <TextInput
+                autofocus
+                errors={errors}
+                form="signup-form"
+                id="city"
+                label="Ville où se situe votre cabinet"
+                onChange={handleChange}
+                touched={touched}
+                values={values}
+              />
+            )}
           </div>
           <StyledButton className="flex-asc" type="submit">
             Envoyer
@@ -99,4 +136,16 @@ const StyledButton = styled.button`
   color: var(text-color);
   padding: 12px 18px;
   border-radius: 2px;
+`;
+
+const StyledFieldset = styled.fieldset`
+  legend {
+    font: 700 0.9rem "Open Sans", sans-serif;
+    margin-bottom: ${(props) => !props.hideLabel && "7.5px"};
+  }
+
+  label {
+    font: 400 0.9rem "Open Sans", sans-serif;
+    margin-left: 7.5px;
+  }
 `;

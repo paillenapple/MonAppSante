@@ -10,6 +10,7 @@ import styled from "styled-components/macro";
 import { Formik } from "formik";
 import { TextInput, DateInput, Loader } from "./../../business-components";
 import { newPatientPayloadSchema } from "../../../utils/yup";
+import { formatDate } from "../../../utils/dataParsing";
 
 const NewPatientForm = () => {
   const [redirect, setRedirection] = useState(false);
@@ -18,9 +19,10 @@ const NewPatientForm = () => {
 
   const handleFormSubmit = (values) => {
     const payload = new FormData();
+    const formattedDob = formatDate(values.dob);
     payload.append("firstname", values.firstname);
     payload.append("surname", values.surname);
-    payload.append("dob", values.dob);
+    payload.append("dob", formattedDob);
     dispatch(displayLoader());
     fetch(`${process.env.REACT_APP_APIBASEURL}/api/patients/create`, {
       method: "POST",

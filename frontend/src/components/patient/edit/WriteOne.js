@@ -1,9 +1,10 @@
 import React from "react";
 import { MainTemplate, UserDesktopTemplate } from "../../../templates";
-import Loader from "../../business-components/Loader";
+import EditPatientForm from "./EditPatientForm";
 
 const WriteOne = (props) => {
-  const { pathname, stoppedLoading } = props.location;
+  const { location, patient } = props;
+  const { pathname } = location;
   return (
     <MainTemplate
       component={
@@ -11,13 +12,7 @@ const WriteOne = (props) => {
           title="Modifier un dossier patient"
           pathname={pathname}
         >
-          {!stoppedLoading && <Loader />}
-          {stoppedLoading && (
-            <>
-              <h2>Modifier un dossier patient</h2>
-              <div>Fetched !</div>
-            </>
-          )}
+          <EditPatientForm patient={patient} {...props} />
         </UserDesktopTemplate>
       }
       {...props}

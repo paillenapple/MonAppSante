@@ -1,15 +1,16 @@
 import React from "react";
+import { MainTemplate, UserDesktopTemplate } from "../../templates";
 
-import { MainTemplate, UserDesktopTemplate } from "./../templates";
-
-const UserDesktop = (props) => {
+const Assignments = (props) => {
   const { pathname } = props.location;
+  const user = props.currentUser;
   return (
     <MainTemplate
       component={
         <UserDesktopTemplate
-          title="Mon espace personnel"
+          title="Mon portefeuille"
           pathname={pathname}
+          user={user}
         ></UserDesktopTemplate>
       }
       {...props}
@@ -17,4 +18,4 @@ const UserDesktop = (props) => {
   );
 };
 
-export default UserDesktop;
+export default Assignments;

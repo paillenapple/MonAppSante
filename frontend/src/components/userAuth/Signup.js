@@ -15,11 +15,16 @@ const Signup = () => {
   const [redirect, setRedirection] = useState(false);
 
   const handleFormSubmit = (values) => {
+    console.log(values)
     const payload = new FormData();
     payload.append("email", values.email);
     payload.append("password", values.password1);
     payload.append("firstname", values.firstname);
     payload.append("surname", values.surname);
+    payload.append("status", values.status);
+    if (values.city !== "") {
+      payload.append("city", values.city);
+    }
     dispatch(displayLoader());
     fetch(`${process.env.REACT_APP_APIBASEURL}/api/auth/signup`, {
       method: "POST",

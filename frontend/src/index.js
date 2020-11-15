@@ -9,19 +9,19 @@ import store from "./app/store";
 import App from "./App";
 
 import Loader from "./components/business-components/Loader";
+import ToastContainer from "./components/business-components/ToastContainer";
 
 import "./styles/index.css";
+import 'react-toastify/dist/ReactToastify.css';
 
 let persistor = persistStore(store);
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate
-        loading={<Loader />}
-        persistor={persistor}
-      >
+      <PersistGate loading={<Loader />} persistor={persistor}>
         <App />
+        <ToastContainer />
       </PersistGate>
     </Provider>
   </React.StrictMode>,
