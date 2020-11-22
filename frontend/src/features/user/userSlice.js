@@ -11,6 +11,7 @@ export const userSlice = createSlice({
     status: "",
     city: "",
     favorites: [],
+    notifications: [],
   },
   reducers: {
     loginUser: (state, action) => {
@@ -22,6 +23,7 @@ export const userSlice = createSlice({
       state.status = action.payload.status;
       state.city = action.payload.city;
       state.favorites = action.payload.favorites;
+      state.notifications = action.payload.notifications;
     },
     logoutUser: (state) => {
       state.id = "";
@@ -32,6 +34,7 @@ export const userSlice = createSlice({
       state.status = "";
       state.city = "";
       state.favorites = [];
+      state.notifications = [];
     },
     updateUser: (state, action) => {
       state.id = action.payload.userId;
@@ -42,6 +45,7 @@ export const userSlice = createSlice({
       state.status = action.payload.status;
       state.city = action.payload.city;
       state.favorites = action.payload.favorites;
+      state.notifications = action.payload.notifications;
     },
   },
 });

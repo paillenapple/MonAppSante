@@ -53,6 +53,7 @@ exports.login = (req, res, next) => {
             status: user.status,
             city: uppercase(user.city),
             favorites: user.favorites,
+            notifications: user.notifications
           });
         })
         .catch((error) => res.status(500).json({ error }));
@@ -86,6 +87,7 @@ exports.getUserInfos = (req, res, next) => {
         status: user.status,
         city: uppercase(user.city),
         favorites: user.favorites,
+        notifications: user.notifications
       });
     })
     .catch((error) => res.status(404).json({ error }));

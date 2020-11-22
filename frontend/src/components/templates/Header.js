@@ -9,7 +9,7 @@ const Header = ({ location }) => {
   const appCurrentUser = useSelector(currentUser);
   const { pathname } = location;
   return (
-    <StyledHeader className="flex flex-jcsb flex-aic nfc-ml-3 pad-3">
+    <StyledHeader className="flex flex-jcsb flex-aic nfc-ml3 pad-3">
       {pathname === "/" ? (
         <span>PédiaJob</span>
       ) : (
@@ -18,17 +18,27 @@ const Header = ({ location }) => {
         </span>
       )}
       {appCurrentUser.token ? (
-        <div className="flex flex-aic nfc-ml-3">
+        <div className="flex flex-aic nfc-ml3">
           {pathname !== "/userdesktop" ? (
             <Link to="/userdesktop">
+              <div className="i-flex flex-aic nfc-ml1">
+                <span>
+                  {appCurrentUser.firstname} {appCurrentUser.surname}
+                </span>
+                <NotificationsCounter className="flex-row-c">
+                  {appCurrentUser.notifications.length}
+                </NotificationsCounter>
+              </div>
+            </Link>
+          ) : (
+            <div className="i-flex flex-aic nfc-ml1">
               <span>
                 {appCurrentUser.firstname} {appCurrentUser.surname}
               </span>
-            </Link>
-          ) : (
-            <span>
-              {appCurrentUser.firstname} {appCurrentUser.surname}
-            </span>
+              <NotificationsCounter className="flex-row-c">
+                {appCurrentUser.notifications.length}
+              </NotificationsCounter>
+            </div>
           )}
 
           <StyledButton type="button" onClick={() => dispatch(logoutUser())}>
@@ -37,7 +47,7 @@ const Header = ({ location }) => {
         </div>
       ) : (
         <nav>
-          <ul className="flex flex-aic nfc-ml-2">
+          <ul className="flex flex-aic nfc-ml2">
             <li>
               {pathname !== "/signup" ? (
                 <Link className="underline" to="/signup">
@@ -87,4 +97,13 @@ const StyledButton = styled.button`
       background: var(--color-secondary-hover);
     }
   }
+`;
+
+const NotificationsCounter = styled.span`
+  width: 24px;
+  height: 24px;
+  font: 400 0.9rem "Open Sans", sans-serif;
+  background: var(--color-error);
+  color: var(--color-white);
+  border-radius: 50%;
 `;

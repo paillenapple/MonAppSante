@@ -62,14 +62,14 @@ const NewPatientForm = () => {
             setFieldValue,
           }) => (
             <StyledForm
-              className="flex flex-col flex-aic nfc-mt-3 pad-3"
+              className="flex flex-col flex-aic nfc-mt3 pad-3"
               id="newpatient-form"
               name="newpatient-form"
               noValidate={true}
               onSubmit={handleSubmit}
               spellCheck={false}
             >
-              <div className="flex flex-col nfc-mt-3">
+              <div className="flex flex-col nfc-mt3">
                 <TextInput
                   autoFocus
                   form="newpatient-form"

@@ -26,7 +26,6 @@ const Login = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
         dispatch(loginUser(data));
         dispatch(hideLoader());
       })
@@ -43,7 +42,7 @@ const Login = () => {
     <>
       {isLoading && <Loader />}
       {!isLoading && (
-        <section className="flex flex-col flex-1 flex-aic nfc-mt-3 pad-3">
+        <section className="flex flex-col flex-1 flex-aic nfc-mt3 pad-3">
           <h1>Se connecter</h1>
           <LoginForm handleFormSubmit={handleFormSubmit} />
         </section>

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { storeCurrentJob, currentJob } from "./../../features/job/jobSlice";
 import { MainTemplate, UserDesktopTemplate } from "../../templates";
 import { Loader } from "./../business-components";
-import styled from "styled-components";
 
 const SeekerOneJob = (props) => {
   const dispatch = useDispatch();
@@ -35,21 +34,14 @@ const SeekerOneJob = (props) => {
       dispatch(storeCurrentJob({}));
       abortController.abort();
     };
-  }, []);
+  }, [dispatch, props.match.params.id]);
 
   return (
     <MainTemplate
       component={
-        <UserDesktopTemplate
-          title="One job"
-          pathname={pathname}
-          user={user}
-        >
+        <UserDesktopTemplate title="One job" pathname={pathname} user={user}>
           {isLoading && <Loader />}
-          {
-            !isLoading &&
-            <h2>Job n°{currentPageJob.jobId}</h2>
-          }
+          {!isLoading && <h2>Job n°{currentPageJob.jobId}</h2>}
         </UserDesktopTemplate>
       }
       {...props}

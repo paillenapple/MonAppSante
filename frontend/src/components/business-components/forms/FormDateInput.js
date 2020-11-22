@@ -1,22 +1,22 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import classNames from "classnames";
 import InputError from "./InputError";
 import DateInput from "./DateInput";
+import { useField } from "formik";
 
 const FormDateInput = (props) => {
+  const [field, meta] = useField(props);
   const labelClassNames = classNames({
     "visually-hidden": props.hideLabel,
   });
   return (
     <Wrapper1 className="flex flex-col">
-      <StyledLabel className={labelClassNames} htmlFor={props.id}>
+      <StyledLabel className={labelClassNames} htmlFor={field.name}>
         {props.label}
       </StyledLabel>
-      <DateInput {...props} />
-      {props.errors[props.id] ? (
-        <StyledInputError message={props.errors[props.id]} />
-      ) : null}
+      <DateInput {...props} {...field} {...meta} />
+      {meta.error && meta.touched && <StyledInputError message={meta.error} />}
     </Wrapper1>
   );
 };
@@ -35,4 +35,4 @@ const StyledLabel = styled.label`
 
 const StyledInputError = styled(InputError)`
   margin-top: 7.5px;
-`
+`;

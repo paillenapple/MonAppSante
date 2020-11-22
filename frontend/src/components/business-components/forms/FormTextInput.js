@@ -1,31 +1,28 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import classNames from "classnames";
 import InputError from "./InputError";
+import { useField } from "formik";
 
-const FormTextInput = (props) => {
+const FormTextInput = ({ label, ...props }) => {
+  const [field, meta] = useField(props);
   const labelClassNames = classNames({
     "visually-hidden": props.hideLabel,
   });
   return (
     <Wrapper1 className="flex flex-col">
-      <StyledLabel className={labelClassNames} htmlFor={props.id}>
-        {props.label}
+      <StyledLabel className={labelClassNames} htmlFor={field.name}>
+        {label}
       </StyledLabel>
       <StyledInput
-        autoFocus={props.autoFocus}
-        form={props.form}
-        id={props.id}
-        name={props.id}
-        onChange={props.onChange}
-        readOnly={props.readOnly}
+        errorStatus={meta.error && meta.touched}
+        name={field.name}
         type="text"
-        value={props.values[props.id]}
-        errorStatus={props.errors[props.id] && props.touched[props.id]}
+        value={field.value}
+        {...field}
+        {...props}
       />
-      {props.errors[props.id] ? (
-        <StyledInputError message={props.errors[props.id]} />
-      ) : null}
+      {meta.error && meta.touched && <StyledInputError message={meta.error} />}
     </Wrapper1>
   );
 };

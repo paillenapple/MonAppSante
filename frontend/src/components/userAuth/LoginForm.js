@@ -1,6 +1,6 @@
 import React from "react";
-import styled from "styled-components";
-import { Formik } from "formik";
+import styled from "styled-components/macro";
+import { Formik, Form } from "formik";
 import { PasswordInput, TextInput } from "./../business-components";
 import { loginPayloadSchema } from "../../utils/yup";
 
@@ -10,36 +10,24 @@ const LoginForm = ({ handleFormSubmit }) => {
       initialValues={{ email: "", password: "" }}
       onSubmit={(values) => handleFormSubmit(values)}
       validationSchema={loginPayloadSchema}
-      validateOnChange={false}
     >
-      {({ values, errors, touched, handleChange, handleSubmit }) => (
+      {() => (
         <StyledForm
-          className="flex flex-col flex-aic nfc-mt-3 pad-3"
+          className="flex flex-col flex-aic nfc-mt3 pad-3"
           id="login-form"
-          name="login-form"
           noValidate={true}
-          onSubmit={handleSubmit}
           spellCheck={false}
         >
-          <div className="flex flex-col nfc-mt-3">
+          <div className="flex flex-col nfc-mt3">
             <TextInput
-              autoFocus
-              errors={errors}
               form="login-form"
-              id="email"
               label="Adresse électronique"
-              onChange={handleChange}
-              touched={touched}
-              values={values}
+              name="email"
             />
             <PasswordInput
-              errors={errors}
               form="login-form"
-              id="password"
               label="Mot de passe"
-              onChange={handleChange}
-              touched={touched}
-              values={values}
+              name="password"
             />
           </div>
           <StyledButton className="flex-asc" type="submit">
@@ -53,7 +41,7 @@ const LoginForm = ({ handleFormSubmit }) => {
 
 export default LoginForm;
 
-const StyledForm = styled.form`
+const StyledForm = styled(Form)`
   background: var(--color-primary-light);
   color: var(--text-color);
   border-radius: 2px;
@@ -62,7 +50,7 @@ const StyledForm = styled.form`
 
 const StyledButton = styled.button`
   background: var(--color-primary);
-  color: var(text-color);
+  color: var(--text-color);
   padding: 12px 18px;
   border-radius: 2px;
 `;

@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { Formik } from "formik";
 import { TextInput, DateInput } from "./../../business-components";
 import { editPatientPayloadSchema } from "../../../utils/yup";
@@ -50,14 +50,14 @@ const EditPatientForm = (props) => {
         setFieldValue,
       }) => (
         <StyledForm
-          className="flex flex-col flex-aic nfc-mt-3 pad-3"
+          className="flex flex-col flex-aic nfc-mt3 pad-3"
           id="editpatient-form"
           name="editpatient-form"
           noValidate={true}
           onSubmit={handleSubmit}
           spellCheck={false}
         >
-          <div className="flex flex-col nfc-mt-3">
+          <div className="flex flex-col nfc-mt3">
             <TextInput
               autoFocus
               form="editpatient-form"

@@ -5,6 +5,7 @@ export const jobSlice = createSlice({
   initialState: {
     jobs: [],
     currentJob: {},
+    activeRecruiterJobs: []
   },
   reducers: {
     storeCurrentPageJobs: (state, action) => {
@@ -13,12 +14,16 @@ export const jobSlice = createSlice({
     storeCurrentJob: (state, action) => {
       state.currentJob = action.payload;
     },
+    storeActiveRecruiterJobs: (state, action) => {
+      state.activeRecruiterJobs = action.payload;
+    }
   },
 });
 
-export const { storeCurrentPageJobs, storeCurrentJob } = jobSlice.actions;
+export const { storeCurrentPageJobs, storeCurrentJob, storeActiveRecruiterJobs } = jobSlice.actions;
 
 export const jobs = (state) => state.job.jobs;
 export const currentJob = (state) => state.job.currentJob;
+export const activeRecruiterJobs = (state) => state.job.activeRecruiterJobs;
 
 export default jobSlice.reducer;

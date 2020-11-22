@@ -39,8 +39,19 @@ const signupPayloadSchema = yup.object().shape({
       message: "Le nom de famille doit commencer et se terminer par une lettre",
     })
     .required("Une valeur (nom de famille de l'utilisateur) est attendue"),
-  city: yup.string().matches(/^[a-zA-Z].*[a-zA-Z]$/, {
-    message: "Le nom de la ville doit commencer et se terminer par une lettre",
+  status: yup
+    .string()
+    .oneOf(["demandeur", "recruteur"])
+    .required("Une valeur (statut de l'utilisateur) est attendue"),
+  city: yup.string().when("status", {
+    is: "recruteur",
+    then: yup
+      .string()
+      .matches(/^[a-zA-Z].*[a-zA-Z]$/, {
+        message:
+          "Le nom de la ville doit commencer et se terminer par une lettre",
+      })
+      .required("Une valeur (nom de la ville) est attendue"),
   }),
 });
 

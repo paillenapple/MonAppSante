@@ -1,4 +1,4 @@
-import { Briefcase, List, Search, FileText, Mail } from "react-feather";
+import { Briefcase, Search, FileText, Mail } from "react-feather";
 
 const setNavContent = (status) => {
   if (status === "demandeur") {
@@ -15,7 +15,7 @@ const setNavContent = (status) => {
       },
       {
         url: "/email",
-        label: "Ma messagerie",
+        label: "Mes notifications",
         icon: Mail
       },
     ]
@@ -33,7 +33,7 @@ const setNavContent = (status) => {
       },
       {
         url: "/email",
-        label: "Ma messagerie",
+        label: "Mes notifications",
         icon: Mail
       },
     ]

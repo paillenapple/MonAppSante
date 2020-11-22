@@ -1,52 +1,46 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import classNames from "classnames";
 import InputError from "./InputError";
 import { Eye, EyeOff } from "react-feather";
+import { useField } from "formik";
 
-const FormPasswordInput = (props) => {
+const FormPasswordInput = ({ label, ...props }) => {
+  const [field, meta] = useField(props);
   const [passwordIsVisible, togglePasswordVisibility] = useState(false);
-  const [isActive, toggleInputFocus] = useState(false);
   const labelClassNames = classNames({
     "visually-hidden": props.hideLabel,
   });
   return (
     <Wrapper1 className="flex flex-col">
-      <StyledLabel className={labelClassNames} htmlFor={props.id}>
-        {props.label}
+      <StyledLabel className={labelClassNames} htmlFor={field.name}>
+        {label}
       </StyledLabel>
       <Wrapper2
         className="flex flex-col"
-        errorStatus={props.errors[props.id] && props.touched[props.id]}
-        isActive={isActive}
+        errorStatus={meta.error && meta.touched}
       >
         <StyledInput
-          autoFocus={props.autoFocus}
-          errorStatus={props.errors[props.id] && props.touched[props.id]}
-          form={props.form}
-          id={props.id}
-          name={props.id}
-          onChange={props.onChange}
-          onFocus={() => toggleInputFocus(true)}
-          onBlur={() => toggleInputFocus(false)}
+          errorStatus={meta.error && meta.touched}
+          name={field.name}
           type={passwordIsVisible ? "text" : "password"}
-          value={props.values[props.id]}
+          value={field.value}
+          {...field}
+          {...props}
         />
         <button
           onClick={() => togglePasswordVisibility((prevState) => !prevState)}
           type="button"
         >
           {passwordIsVisible ? (
-            <Eye width={20} height={20} />
+            <Eye size={20} />
           ) : (
-            <EyeOff width={20} height={20} />
+            <EyeOff size={20} />
           )}
         </button>
       </Wrapper2>
 
-      {props.errors[props.id] && props.touched[props.id] ? (
-        <StyledInputError message={props.errors[props.id]} />
-      ) : null}
+      {meta.error && meta.touched && <StyledInputError message={meta.error} />}
     </Wrapper1>
   );
 };
@@ -61,18 +55,6 @@ const Wrapper1 = styled.div`
 const Wrapper2 = styled.div`
   position: relative;
   background: var(--color-white);
-  padding: 6px;
-  border: ${(props) =>
-    props.errorStatus
-      ? "1px solid var(--color-error)"
-      : "1px solid var(--text-color)"};
-  border-radius: 2px;
-  outline: ${(props) =>
-    props.isActive
-      ? props.errorStatus
-        ? "1px dashed var(--color-error)"
-        : "1px dashed var(--text-color)"
-      : "none"};
 
   > button {
     position: absolute;
@@ -85,11 +67,18 @@ const Wrapper2 = styled.div`
 const StyledInput = styled.input`
   color: ${(props) =>
     props.errorStatus ? "var(--color-error)" : "var(--text-color)"};
-  padding: 0;
-  border: none;
+  padding: 6px;
+  border: ${(props) =>
+    props.errorStatus
+      ? "1px solid var(--color-error)"
+      : "1px solid var(--text-color)"};
+  border-radius: 2px;
 
   &:focus {
-    outline: none;
+    outline: ${(props) =>
+      props.errorStatus
+        ? "1px dashed var(--color-error)"
+        : "1px dashed var(--text-color)"};
   }
 `;
 

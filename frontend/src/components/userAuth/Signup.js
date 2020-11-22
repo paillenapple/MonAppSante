@@ -15,7 +15,6 @@ const Signup = () => {
   const [redirect, setRedirection] = useState(false);
 
   const handleFormSubmit = (values) => {
-    console.log(values)
     const payload = new FormData();
     payload.append("email", values.email);
     payload.append("password", values.password1);
@@ -47,7 +46,7 @@ const Signup = () => {
     <>
       {isLoading && <Loader />}
       {!isLoading && (
-        <section className="flex flex-col flex-1 flex-aic nfc-mt-3 pad-3">
+        <section className="flex flex-col flex-1 flex-aic nfc-mt3 pad-3">
           <h1>Créer un compte</h1>
           <SignupForm handleFormSubmit={handleFormSubmit} />
         </section>

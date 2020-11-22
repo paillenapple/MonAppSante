@@ -1,7 +1,4 @@
 import React from "react";
-
-import styled from "styled-components";
-
 import { MainTemplate, UserDesktopTemplate } from "./../templates";
 
 const UserSeekerDesktop = (props) => {

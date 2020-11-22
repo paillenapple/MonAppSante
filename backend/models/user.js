@@ -35,6 +35,10 @@ const userSchema = mongoose.Schema({
     type: Array,
     required: true,
   },
+  notifications: {
+    type: Array,
+    required: true,
+  },
 });
 
 userSchema.plugin(uniqueValidator);

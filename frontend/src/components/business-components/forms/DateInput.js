@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import classNames from "classnames";
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -8,21 +8,22 @@ registerLocale("fr", fr);
 
 const DateInput = (props) => {
   const wrapper1ClassNames = classNames("flex flex-col", {
-    errorStatus: props.errors[props.id] && props.touched[props.id],
+    errorStatus: props.error && props.touched,
   });
   return (
     <Wrapper1 className={wrapper1ClassNames}>
       <DatePicker
         dateFormat="dd/MM/yyyy"
         dropdownMode="select"
-        id={props.id}
+        id={props.name}
         isClearable={props.isClearable}
         locale="fr"
-        maxDate={new Date()}
-        minDate={new Date(1900, 1, 1)}
-        name={props.id}
-        onChange={(date) => props.setFieldValue(props.id, date)}
-        selected={props.values[props.id]}
+        maxDate={props.maxDate}
+        minDate={props.minDate}
+        name={props.name}
+        onChange={(date) => props.setFieldValue(props.name, date)}
+        openToDate={props.openToDate}
+        selected={props.value}
         showMonthDropdown
         showPopperArrow={false}
         showYearDropdown
@@ -30,6 +31,11 @@ const DateInput = (props) => {
     </Wrapper1>
   );
 };
+
+DateInput.defaultProps = {
+  maxDate: new Date(),
+  minDate: new Date(1900, 1, 1),
+}
 
 export default DateInput;
 

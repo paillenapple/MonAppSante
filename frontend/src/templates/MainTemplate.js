@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import {Header, Footer} from "./../components";
 
-const MainTemplate = ({ component, location }) => {
+const MainTemplate = ({ component, location, currentUser }) => {
   return (
     <>
       <Header location={location} />

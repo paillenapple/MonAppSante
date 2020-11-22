@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 import {
   storeCurrentPageJobs,
   jobs,
-  storeCurrentJob,
-  currentJob,
 } from "./../../features/job/jobSlice";
 import { updateUser } from "./../../features/user/userSlice";
 import styled from "styled-components/macro";
@@ -13,8 +11,7 @@ import { displayToast } from "./../../utils/functions";
 import Pagination from "rc-pagination";
 import frFR from "rc-pagination/lib/locale/fr_FR";
 import { MainTemplate, UserDesktopTemplate } from "./../../templates";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { join, remove } from "lodash";
+// import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Loader } from "./../business-components";
 import {
   ChevronLeft,
@@ -28,11 +25,9 @@ import {
 const SearchJob = (props) => {
   const dispatch = useDispatch();
   const currentPageJobs = useSelector(jobs);
-  const oneJob = useSelector(currentJob);
   const [isLoading, toggleLoadingStatus] = useState(true);
-  const [jobEdited, triggerFetchAfterEdition] = useState(false);
   const [totalJobs, updateTotalJobs] = useState("");
-  const [jobsDisplay, setJobsDisplay] = useState("list");
+  // const [jobsDisplay, setJobsDisplay] = useState("list");
   const [currentPage, updateCurrentPage] = useState(1);
   const [paginationOffset, updatePaginationOffset] = useState(0);
   const pageSize = 10;
@@ -86,7 +81,7 @@ const SearchJob = (props) => {
     return () => {
       abortController.abort();
     };
-  }, [dispatch, paginationOffset, jobEdited]);
+  }, [dispatch, paginationOffset]);
 
   // gestion de l'ajout / suppression de favori
 
@@ -282,12 +277,12 @@ const SearchJob = (props) => {
 
 export default SearchJob;
 
-const StyledButton = styled.button`
-  align-self: center;
-  background: var(--color-secondary);
-  color: var(--text-color);
-  padding: 12px 18px;
-`;
+// const StyledButton = styled.button`
+//   align-self: center;
+//   background: var(--color-secondary);
+//   color: var(--text-color);
+//   padding: 12px 18px;
+// `;
 
 const StyledTable = styled.table`
   background: var(--color-white);

@@ -2,7 +2,7 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 import setNavContent from "./navigationContent";
 
@@ -16,13 +16,13 @@ const MainNavigation = ({ pathname, user }) => {
           return (
             <StyledLi key={navitem.label}>
               {pathname === navitem.url ? (
-                <Wrapper1 className="i-flex flex-aic nfc-ml-1">
+                <Wrapper1 className="i-flex flex-aic nfc-ml1">
                   <Icon color="hsl(0, 0%, 17%)" size={18.4} />
                   <span>{navitem.label}</span>
                 </Wrapper1>
               ) : (
                 <StyledLink
-                  className="i-flex flex-aic underline nfc-ml-1"
+                  className="i-flex flex-aic underline nfc-ml1"
                   to={navitem.url}
                 >
                   <Icon color="hsl(93, 7%, 20%)" size={18.4} />

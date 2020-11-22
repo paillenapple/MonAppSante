@@ -1,29 +1,29 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import RadioInput from "./RadioInput";
 import InputError from "./../../business-components/forms/InputError";
+import { useField } from "formik";
 
 const RadioFieldsetInput = (props) => {
+  const [field, meta] = useField(props);
   return (
     <StyledFieldset className="flex flex-col">
       <legend>{props.legend}</legend>
-      <div className="flex flex-col nfc-mt-1">
-        {props.fields.map((field, index) => {
+      <div className="flex flex-col nfc-mt1">
+        {props.fields.map((f, index) => {
           return (
             <RadioInput
               key={index}
-              id={field.id}
-              value={field.value}
-              checked={props.values[props.name] === field["value"]}
-              label={field.label}
+              id={f.id}
+              label={f.label}
+              value={f.value}
+              field={field}
               {...props}
             />
           );
         })}
       </div>
-      {props.errors[props.name] ? (
-        <StyledInputError message={props.errors[props.name]} />
-      ) : null}
+      {meta.error && meta.touched && <StyledInputError message={meta.error} />}
     </StyledFieldset>
   );
 };
