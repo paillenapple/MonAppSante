@@ -33,7 +33,6 @@ exports.createJob = (req, res, next) => {
 
 exports.deleteOneJob = (req, res, next) => {
   const user = JSON.parse(req.body.user);
-  console.log(user.firstname);
   Promise.all([
     Job.deleteOne({ _id: req.body.id }),
     User.updateMany(
@@ -41,19 +40,22 @@ exports.deleteOneJob = (req, res, next) => {
       {
         $pull: { favorites: { _id: req.body.id } },
         $push: {
-          notifications: `L'annonce ${req.body.id} a été supprimée par le Dr ${
-            user.firstname
-          }${" "}${user.surname} !`,
+          notifications: {
+            type: 0,
+            body: {
+              jobId: req.body.id,
+              recruiterFirstname: user.firstname,
+              recruiterSurname: user.surname,
+            }
+          },
         },
       }
     ),
   ])
     .then(([jobs, resultat]) => {
-      console.log({ jobs }, { resultat });
       res.status(200).json(jobs);
     })
     .catch((error) => {
-      console.log(error);
       res.status(400).json({ error });
     });
 };

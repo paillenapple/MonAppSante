@@ -1,27 +1,19 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  displayLoader,
-  hideLoader,
-  selectIsLoading,
-} from "../../features/loader/loaderSlice";
-import { currentUser } from "./../../features/user/userSlice";
 import { Redirect } from "react-router-dom";
 import styled from "styled-components/macro";
 import { Formik, Form } from "formik";
-import { RadioFieldsetInput, Loader } from "./../business-components";
-import { newJobForm11Schema, newJobForm21Schema } from "../../utils/yup";
-import { formatDate } from "../../utils/dataParsing";
+import { Button, RadioFieldsetInput, Loader } from "./../business-components";
 import PostFormStep21 from "./PostFormStep21";
 import PostFormStep31 from "./PostFormStep31";
+import { newJobForm11Schema, newJobForm21Schema } from "../../utils/yup";
+import { formatDate } from "../../utils/dataParsing";
 
-const PostForm = () => {
-  const [redirect, setRedirection] = useState(false);
+const PostForm = (props) => {
+  const {currentUser} = props;
+  const [isLoading, setLoadingStatus] = useState(false);
+  const [redirect, triggerRedirection] = useState(false);
   const [step, setFormStep] = useState(1);
-  const dispatch = useDispatch();
-  const isLoading = useSelector(selectIsLoading);
-  const user = useSelector(currentUser);
-
+  
   const getValidationSchema = (step) => {
     switch (step) {
       case 1:
@@ -34,12 +26,12 @@ const PostForm = () => {
   };
 
   const handleFormSubmit = (values) => {
+    setLoadingStatus(true);
     setFormStep(1);
-    dispatch(displayLoader());
     const payload = new FormData();
     const formattedJobStartDate = formatDate(values.jobStartDate);
     const formattedJobEndDate = formatDate(values.jobEndDate);
-    payload.append("recruiterId", user.id);
+    payload.append("recruiterId", currentUser.id);
     payload.append("jobType", values.jobType);
     payload.append("recruiterFirstname", values.recruiterFirstname);
     payload.append("recruiterSurname", values.recruiterSurname);
@@ -56,11 +48,13 @@ const PostForm = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        dispatch(hideLoader());
-        setRedirection(true);
+        console.log(data);
+        setLoadingStatus(false);
+        triggerRedirection(true);
       })
       .catch((error) => {
-        dispatch(hideLoader());
+        console.error(error);
+        setLoadingStatus(false);
       });
   };
   if (redirect) {
@@ -111,11 +105,11 @@ const PostForm = () => {
           <Formik
             initialValues={{
               jobType: "",
-              recruiterFirstname: user.firstname,
-              recruiterSurname: user.surname,
+              recruiterFirstname: currentUser.firstname,
+              recruiterSurname: currentUser.surname,
               jobStartDate: "",
               jobEndDate: "",
-              jobCity: user.city,
+              jobCity: currentUser.city,
               maternity: "",
               maternityRequired: "",
             }}
@@ -155,7 +149,7 @@ const PostForm = () => {
                           legend="Type de remplacement"
                           name="jobType"
                         />
-                        <StyledButton
+                        <Button
                           className="flex-asc"
                           onClick={() => {
                             setFieldTouched("jobType", true);
@@ -165,10 +159,9 @@ const PostForm = () => {
                               }
                             });
                           }}
-                          type="button"
                         >
                           Étape suivante
-                        </StyledButton>
+                        </Button>
                       </>
                     )}
                     {step === 2 && (
@@ -265,13 +258,6 @@ const StyledForm = styled(Form)`
   color: var(--text-color);
   border-radius: 2px;
   box-shadow: var(--box-shadow-1);
-`;
-
-const StyledButton = styled.button`
-  background: var(--color-primary);
-  color: var(text-color);
-  padding: 12px 18px;
-  border-radius: 2px;
 `;
 
 const StyledUl = styled.ul`

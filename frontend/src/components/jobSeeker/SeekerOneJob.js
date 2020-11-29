@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { storeCurrentJob, currentJob } from "./../../features/job/jobSlice";
-import { MainTemplate, UserDesktopTemplate } from "../../templates";
+import {
+  DashboardTemplate,
+} from "../../templates";
 import { Loader } from "./../business-components";
 
 const SeekerOneJob = (props) => {
   const dispatch = useDispatch();
   const currentPageJob = useSelector(currentJob);
-  const [isLoading, toggleLoadingStatus] = useState(true);
+  const [isLoading, setLoadingStatus] = useState(true);
   const { pathname } = props.location;
-  const user = props.currentUser;
+  const { currentUser } = props;
 
   useEffect(() => {
-    toggleLoadingStatus(true);
+    setLoadingStatus(true);
     const abortController = new AbortController();
     const fetchCurrentJob = () => {
       const url = new URL(
@@ -27,7 +29,7 @@ const SeekerOneJob = (props) => {
           dispatch(storeCurrentJob(job));
         })
         .catch((error) => console.error(error))
-        .finally(() => toggleLoadingStatus(false));
+        .finally(() => setLoadingStatus(false));
     };
     fetchCurrentJob();
     return () => {
@@ -37,15 +39,13 @@ const SeekerOneJob = (props) => {
   }, [dispatch, props.match.params.id]);
 
   return (
-    <MainTemplate
-      component={
-        <UserDesktopTemplate title="One job" pathname={pathname} user={user}>
-          {isLoading && <Loader />}
-          {!isLoading && <h2>Job n°{currentPageJob.jobId}</h2>}
-        </UserDesktopTemplate>
-      }
-      {...props}
-    />
+    <DashboardTemplate
+      title="One job"
+      pathname={pathname}
+      currentUser={currentUser}
+    >
+      {isLoading ? <Loader /> : <h2>Job n°{currentPageJob.jobId}</h2>}
+    </DashboardTemplate>
   );
 };
 

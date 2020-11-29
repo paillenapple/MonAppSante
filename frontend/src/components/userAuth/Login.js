@@ -1,40 +1,36 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  displayLoader,
-  hideLoader,
-  selectIsLoading,
-} from "../../features/loader/loaderSlice";
-import { loginUser, currentUser } from "../../features/user/userSlice";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../features/user/userSlice";
 import { Redirect } from "react-router-dom";
 import { LoginForm } from "..";
 import { Loader } from "./../business-components";
 
-const Login = () => {
+const Login = ({ currentUser }) => {
   const dispatch = useDispatch();
-  const user = useSelector(currentUser);
-  const isLoading = useSelector(selectIsLoading);
+  const [isLoading, setLoadingStatus] = useState(false);
 
   const handleFormSubmit = (values) => {
+    setLoadingStatus(true);
     const payload = new FormData();
     payload.append("email", values.email);
     payload.append("password", values.password);
-    dispatch(displayLoader());
     fetch(`${process.env.REACT_APP_APIBASEURL}/api/auth/login`, {
       method: "POST",
       body: payload,
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
+        setLoadingStatus(false);
         dispatch(loginUser(data));
-        dispatch(hideLoader());
       })
       .catch((error) => {
-        dispatch(hideLoader());
+        console.error(error);
+        setLoadingStatus(false);
       });
   };
 
-  if (user.token) {
+  if (currentUser.token) {
     return <Redirect to="/userdesktop" />;
   }
 

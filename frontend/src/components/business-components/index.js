@@ -1,19 +1,19 @@
-import Loader from "./Loader";
-import MultiSwitch from "./MultiSwitch";
-import TextInput from "./forms/FormTextInput";
+import Button from "./Button";
 import DateInput from "./forms/FormDateInput";
+import InputError from "./forms/InputError";
+import Loader from "./Loader";
 import PasswordInput from "./forms/FormPasswordInput";
 import RadioFieldsetInput from "./forms/RadioFieldsetInput";
-import InputError from "./forms/InputError";
+import TextInput from "./forms/FormTextInput";
 import ToastContainer from "./ToastContainer";
 
 export {
-  Loader,
-  MultiSwitch,
-  TextInput,
+  Button,
   DateInput,
+  InputError,
+  Loader,
   PasswordInput,
   RadioFieldsetInput,
-  InputError,
-  ToastContainer
-}
+  TextInput,
+  ToastContainer,
+};

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components/macro";
 import { Formik, Form } from "formik";
-import { PasswordInput, TextInput } from "./../business-components";
+import { Button, PasswordInput, TextInput } from "./../business-components";
 import { loginPayloadSchema } from "../../utils/yup";
 
 const LoginForm = ({ handleFormSubmit }) => {
@@ -30,9 +30,9 @@ const LoginForm = ({ handleFormSubmit }) => {
               name="password"
             />
           </div>
-          <StyledButton className="flex-asc" type="submit">
+          <Button className="flex-asc" type="submit">
             Envoyer
-          </StyledButton>
+          </Button>
         </StyledForm>
       )}
     </Formik>
@@ -46,11 +46,4 @@ const StyledForm = styled(Form)`
   color: var(--text-color);
   border-radius: 2px;
   box-shadow: var(--box-shadow-1);
-`;
-
-const StyledButton = styled.button`
-  background: var(--color-primary);
-  color: var(--text-color);
-  padding: 12px 18px;
-  border-radius: 2px;
 `;

@@ -5,6 +5,7 @@
   --color-white: hsl(0, 0%, 100%);
   --color-light-grey: hsl(0, 0%, 94%);
   --color-primary: hsl(169, 21%, 54%);
+  --color-primary-hover: hsl(169, 21%, 47%);
   --color-primary-light: hsl(169, 17%, 96%);
   --color-secondary: hsl(40, 75%, 62%);
   --color-secondary-hover: hsl(40, 75%, 55%);

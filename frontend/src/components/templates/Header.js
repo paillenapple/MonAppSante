@@ -1,13 +1,13 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUser, logoutUser } from "../../features/user/userSlice";
+import { Button } from "./../business-components";
 import { Link } from "react-router-dom";
 import styled from "styled-components/macro";
 
-const Header = ({ location }) => {
+const Header = ({ pathname }) => {
   const dispatch = useDispatch();
   const appCurrentUser = useSelector(currentUser);
-  const { pathname } = location;
   return (
     <StyledHeader className="flex flex-jcsb flex-aic nfc-ml3 pad-3">
       {pathname === "/" ? (
@@ -41,9 +41,9 @@ const Header = ({ location }) => {
             </div>
           )}
 
-          <StyledButton type="button" onClick={() => dispatch(logoutUser())}>
+          <Button variant="secondary" onClick={() => dispatch(logoutUser())}>
             Se déconnecter
-          </StyledButton>
+          </Button>
         </div>
       ) : (
         <nav>
@@ -83,19 +83,6 @@ const StyledHeader = styled.header`
 
   > span {
     font: 700 2rem "Open Sans", sans-serif;
-  }
-`;
-
-const StyledButton = styled.button`
-  background: var(--color-secondary);
-  color: var(--text-color);
-  padding: 12px 18px;
-  border-radius: 2px;
-
-  @media (hover: hover) {
-    &:hover {
-      background: var(--color-secondary-hover);
-    }
   }
 `;
 

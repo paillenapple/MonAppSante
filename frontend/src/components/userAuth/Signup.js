@@ -1,20 +1,14 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  displayLoader,
-  hideLoader,
-  selectIsLoading,
-} from "./../../features/loader/loaderSlice";
 import { Redirect } from "react-router-dom";
 import { SignupForm } from "./../../components";
 import { Loader } from "./../business-components";
 
 const Signup = () => {
-  const isLoading = useSelector(selectIsLoading);
-  const dispatch = useDispatch();
-  const [redirect, setRedirection] = useState(false);
-
+  const [redirect, triggerRedirection] = useState(false);
+  const [isLoading, setLoadingStatus] = useState(false);
+  
   const handleFormSubmit = (values) => {
+    setLoadingStatus(true);
     const payload = new FormData();
     payload.append("email", values.email);
     payload.append("password", values.password1);
@@ -24,18 +18,19 @@ const Signup = () => {
     if (values.city !== "") {
       payload.append("city", values.city);
     }
-    dispatch(displayLoader());
     fetch(`${process.env.REACT_APP_APIBASEURL}/api/auth/signup`, {
       method: "POST",
       body: payload,
     })
       .then((response) => response.json())
       .then((response) => {
-        dispatch(hideLoader());
-        setRedirection(true);
+        console.log(response);
+        setLoadingStatus(false);
+        triggerRedirection(true);
       })
       .catch((error) => {
-        dispatch(hideLoader());
+        console.error(error);
+        setLoadingStatus(false);
       });
   };
 

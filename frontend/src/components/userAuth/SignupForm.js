@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components/macro";
 import { Formik, Form } from "formik";
 import {
+  Button,
   PasswordInput,
   TextInput,
   RadioFieldsetInput,
@@ -75,9 +76,9 @@ const SignupForm = ({ handleFormSubmit }) => {
                 />
               )}
             </div>
-            <StyledButton className="flex-asc" type="submit">
+            <Button className="flex-asc" type="submit">
               Envoyer
-            </StyledButton>
+            </Button>
           </StyledForm>
         );
       }}
@@ -92,11 +93,4 @@ const StyledForm = styled(Form)`
   color: var(--text-color);
   border-radius: 2px;
   box-shadow: var(--box-shadow-1);
-`;
-
-const StyledButton = styled.button`
-  background: var(--color-primary);
-  color: var(text-color);
-  padding: 12px 18px;
-  border-radius: 2px;
 `;

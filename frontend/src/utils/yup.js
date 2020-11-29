@@ -55,44 +55,6 @@ const signupPayloadSchema = yup.object().shape({
   }),
 });
 
-const newPatientPayloadSchema = yup.object().shape({
-  firstname: yup
-    .string()
-    .matches(/^[a-zA-Z].*[a-zA-Z]$/, {
-      message: "Le prénom doit commencer et se terminer par une lettre",
-    })
-    .required("Une valeur (prénom du patient) est attendue"),
-  surname: yup
-    .string()
-    .matches(/^[a-zA-Z].*[a-zA-Z]$/, {
-      message: "Le nom de famille doit commencer et se terminer par une lettre",
-    })
-    .required("Une valeur (nom de famille du patient) est attendue"),
-  dob: yup
-    .date()
-    .nullable()
-    .required("Une valeur (date de naissance du patient) est attendue"),
-});
-
-const editPatientPayloadSchema = yup.object().shape({
-  firstname: yup
-    .string()
-    .matches(/^[a-zA-Z].*[a-zA-Z]$/, {
-      message: "Le prénom doit commencer et se terminer par une lettre",
-    })
-    .required("Une valeur (prénom du patient) est attendue"),
-  surname: yup
-    .string()
-    .matches(/^[a-zA-Z].*[a-zA-Z]$/, {
-      message: "Le nom de famille doit commencer et se terminer par une lettre",
-    })
-    .required("Une valeur (nom de famille du patient) est attendue"),
-  dob: yup
-    .date()
-    .nullable()
-    .required("Une valeur (date de naissance du patient) est attendue"),
-});
-
 const newJobForm11Schema = yup.object().shape({
   jobType: yup
     .string()
@@ -149,8 +111,6 @@ const newJobForm21Schema = yup.object().shape({
 export {
   loginPayloadSchema,
   signupPayloadSchema,
-  newPatientPayloadSchema,
-  editPatientPayloadSchema,
   newJobForm11Schema,
   newJobForm21Schema,
 };

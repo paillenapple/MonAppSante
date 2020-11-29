@@ -5,29 +5,31 @@ import {
   storeActiveRecruiterJobs,
   activeRecruiterJobs,
 } from "./../features/job/jobSlice";
-import {
-  displayLoader,
-  hideLoader,
-  selectIsLoading,
-} from "../features/loader/loaderSlice";
 import { Loader } from "./business-components";
 import JobCard from "./recruiter/JobCard";
-import { MainTemplate, UserDesktopTemplate } from "./../templates";
+import { DashboardTemplate } from "./../templates";
 
 const UserRecruiterDesktop = (props) => {
-  const isLoading = useSelector(selectIsLoading);
   const recruiterJobs = useSelector(activeRecruiterJobs);
   const dispatch = useDispatch();
   const [jobDeleted, triggerFetchAfterDeletion] = useState(false);
+  const [isLoading, setLoadingStatus] = useState(false);
   const { pathname } = props.location;
-  const user = props.currentUser;
+  const { currentUser } = props;
+
+  // useEffect(() => {
+  //   console.log("mount");
+  //   return () => {
+  //     console.log("unmount");
+  //   };
+  // }, []);
 
   useEffect(() => {
-    dispatch(displayLoader());
+    setLoadingStatus(true);
     const abortController = new AbortController();
     const fetchActiveRecruiterJobs = () => {
       const url = new URL(
-        `${process.env.REACT_APP_APIBASEURL}/api/job/read-active-recruiter-jobs/${user.id}`
+        `${process.env.REACT_APP_APIBASEURL}/api/job/read-active-recruiter-jobs/${currentUser.id}`
       );
       fetch(url, {
         method: "GET",
@@ -37,25 +39,27 @@ const UserRecruiterDesktop = (props) => {
         .then((jobs) => {
           dispatch(storeActiveRecruiterJobs(jobs));
         })
-        .catch((error) => console.error(error))
+        .catch((error) => {
+          console.error(error);
+        })
         .finally(() => {
-          dispatch(hideLoader());
+          setLoadingStatus(false);
         });
     };
     fetchActiveRecruiterJobs();
     return () => {
       abortController.abort();
     };
-  }, [dispatch, jobDeleted, user.id]);
+  }, [dispatch, jobDeleted, currentUser.id]);
 
   const deleteJob = (id) => {
-    dispatch(displayLoader());
+    setLoadingStatus(true);
     const deleteJob = () => {
       const url = new URL(
         `${process.env.REACT_APP_APIBASEURL}/api/job/delete-job`
       );
       const formData = new FormData();
-      const formUser = JSON.stringify(user);
+      const formUser = JSON.stringify(currentUser);
       formData.append("id", id);
       formData.append("user", formUser);
       fetch(url, {
@@ -70,46 +74,41 @@ const UserRecruiterDesktop = (props) => {
         .catch((error) => {
           console.error(error);
           displayToast(`L'annonce n'a pas pu être supprimée !`, "error");
-          dispatch(hideLoader());
+          setLoadingStatus(false);
         });
     };
     deleteJob();
   };
   return (
-    <MainTemplate
-      component={
-        <UserDesktopTemplate
-          title="Mon espace personnel"
-          pathname={pathname}
-          user={user}
-        >
-          {isLoading && <Loader />}
-          {!isLoading && (
-            <>
-              <div className="flex flex-col nfc-mt1">
-                <span>Nom: {user.surname}</span>
-                <span>Prénom: {user.firstname}</span>
-                <span>Statut: {user.status}</span>
-              </div>
-              <h2>Mes annonces</h2>
-              <span>Nombre d'annonces : {recruiterJobs.length}</span>
-              {recruiterJobs.length > 0 && (
-                <ul className="flex flex-col nfc-mt2">
-                  {recruiterJobs.map((job, index) => {
-                    return (
-                      <li key={`${job.recruiterSurname}-${index}`}>
-                        <JobCard job={job} deleteJob={(id) => deleteJob(id)} />
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
-            </>
+    <DashboardTemplate
+      title="Mon espace personnel"
+      pathname={pathname}
+      currentUser={currentUser}
+    >
+      {isLoading && <Loader />}
+      {!isLoading && (
+        <>
+          <div className="flex flex-col nfc-mt1">
+            <span>Nom: {currentUser.surname}</span>
+            <span>Prénom: {currentUser.firstname}</span>
+            <span>Statut: {currentUser.status}</span>
+          </div>
+          <h2>Mes annonces</h2>
+          <span>Nombre d'annonces : {recruiterJobs.length}</span>
+          {recruiterJobs.length > 0 && (
+            <ul className="flex flex-col nfc-mt2">
+              {recruiterJobs.map((job, index) => {
+                return (
+                  <li key={`${job.recruiterSurname}-${index}`}>
+                    <JobCard job={job} deleteJob={(id) => deleteJob(id)} />
+                  </li>
+                );
+              })}
+            </ul>
           )}
-        </UserDesktopTemplate>
-      }
-      {...props}
-    />
+        </>
+      )}
+    </DashboardTemplate>
   );
 };
 

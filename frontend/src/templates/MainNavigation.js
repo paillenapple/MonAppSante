@@ -1,13 +1,10 @@
 import React from "react";
-
 import { Link } from "react-router-dom";
-
 import styled from "styled-components/macro";
-
 import setNavContent from "./navigationContent";
 
-const MainNavigation = ({ pathname, user }) => {
-  const navContent = setNavContent(user.status);
+const MainNavigation = ({ pathname, currentUser }) => {
+  const navContent = setNavContent(currentUser.status);
   return (
     <StyledNav className="flex-asfs">
       <ul className="flex">

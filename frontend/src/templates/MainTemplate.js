@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 
 import {Header, Footer} from "./../components";
 
-const MainTemplate = ({ component, location, currentUser }) => {
+const MainTemplate = ({ component, pathname }) => {
   return (
     <>
-      <Header location={location} />
+      <Header pathname={pathname} />
       <main className="flex flex-col flex-1">{component}</main>
       <Footer />
     </>

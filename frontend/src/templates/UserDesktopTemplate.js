@@ -4,14 +4,13 @@ import styled from "styled-components/macro";
 
 import MainNavigation from "./MainNavigation";
 
-const UserDesktopTemplate = ({ children, title, pathname, multiSwitch, user }) => {
+const UserDesktopTemplate = ({ children, title, pathname, currentUser }) => {
   return (
     <>
-      <MainNavigation pathname={pathname} user={user} />
+      <MainNavigation pathname={pathname} currentUser={currentUser} />
       <Wrapper1 className="flex flex-col flex-1 nfc-mt3 pad-3">
         <div className="flex flex-jcsb flex-aife nfc-ml3">
           <h1>{title}</h1>
-          {multiSwitch}
         </div>
         <StyledSection className="flex flex-col flex-1 nfc-mt3 pad-3">
           {children}

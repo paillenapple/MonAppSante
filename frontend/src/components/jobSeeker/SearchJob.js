@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import {
-  storeCurrentPageJobs,
-  jobs,
-} from "./../../features/job/jobSlice";
+import { storeCurrentPageJobs, jobs } from "./../../features/job/jobSlice";
 import { updateUser } from "./../../features/user/userSlice";
+import { Link } from "react-router-dom";
 import styled from "styled-components/macro";
-import { displayToast } from "./../../utils/functions";
 import Pagination from "rc-pagination";
 import frFR from "rc-pagination/lib/locale/fr_FR";
-import { MainTemplate, UserDesktopTemplate } from "./../../templates";
 // import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { Loader } from "./../business-components";
+import { displayToast } from "./../../utils/functions";
+import {
+  DashboardTemplate,
+} from "./../../templates";
+import {
+  Loader,
+  // Button
+} from "./../business-components";
 import {
   ChevronLeft,
   ChevronRight,
@@ -23,16 +25,16 @@ import {
 } from "react-feather";
 
 const SearchJob = (props) => {
+  const { currentUser } = props;
+  const { pathname } = props.location;
+  const pageSize = 10;
   const dispatch = useDispatch();
   const currentPageJobs = useSelector(jobs);
-  const [isLoading, toggleLoadingStatus] = useState(true);
+  const [isLoading, setLoadingStatus] = useState(true);
   const [totalJobs, updateTotalJobs] = useState("");
-  // const [jobsDisplay, setJobsDisplay] = useState("list");
   const [currentPage, updateCurrentPage] = useState(1);
   const [paginationOffset, updatePaginationOffset] = useState(0);
-  const pageSize = 10;
-  const { pathname } = props.location;
-  const currentUser = props.currentUser;
+  // const [jobsDisplay, setJobsDisplay] = useState("list");
 
   // fetch du nombre total d'annonces à l'affichage de la page
 
@@ -75,7 +77,7 @@ const SearchJob = (props) => {
           dispatch(storeCurrentPageJobs(data));
         })
         .catch((error) => console.error(error))
-        .finally(() => toggleLoadingStatus(false));
+        .finally(() => setLoadingStatus(false));
     };
     fetchCurrentPageJobs();
     return () => {
@@ -139,15 +141,13 @@ const SearchJob = (props) => {
   };
 
   return (
-    <MainTemplate
-      component={
-        <UserDesktopTemplate
-          title="Chercher un remplacement"
-          pathname={pathname}
-          user={currentUser}
-        >
-          {/* <StyledButton
-            type="button"
+    <DashboardTemplate
+      title="Chercher un remplacement"
+      pathname={pathname}
+      currentUser={currentUser}
+    >
+      {/* <Button
+            className="flex-asc"
             onClick={() =>
               setJobsDisplay((prevDisplay) =>
                 prevDisplay === "list" ? "map" : "list"
@@ -155,96 +155,93 @@ const SearchJob = (props) => {
             }
           >
             {jobsDisplay === "list" ? "Afficher la carte" : "Afficher la liste"}
-          </StyledButton> */}
-          {isLoading && <Loader />}
-          {!isLoading && (
+          </Button> */}
+      {isLoading && <Loader />}
+      {!isLoading && (
+        <>
+          {totalJobs > 0 && currentPageJobs.length > 0 ? (
             <>
-              {totalJobs > 0 && currentPageJobs.length > 0 ? (
-                <>
-                  <StyledTable>
-                    <thead>
-                      <tr>
-                        <th>Nom du médecin</th>
-                        <th>Prénom du médecin</th>
-                        <th>Du</th>
-                        <th>Au</th>
-                        <th>Ville</th>
-                        <th className="center">Consulter</th>
-                        <th className="center">Ajouter à mes favoris</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {currentPageJobs.map((job) => (
-                        <tr key={job._id}>
-                          <td>{job.recruiterSurname}</td>
-                          <td>{job.recruiterFirstname}</td>
-                          <td>{job.jobStartDate}</td>
-                          <td>{job.jobEndDate}</td>
-                          <td>{job.jobCity}</td>
-                          <td className="center">
-                            <Link
-                              className="i-flex"
-                              to={`/seeker/job/${job._id}`}
-                            >
-                              <File color="hsl(93, 7%, 10%)" size={24} />
-                            </Link>
-                          </td>
-                          <td className="center">
-                            <button
-                              className="i-flex"
-                              onClick={() => setNewFavoriteJob(job)}
-                              type="button"
-                            >
-                              <Star
-                                color={
-                                  currentUser.favorites.filter(
-                                    (f) => f._id === job._id
-                                  ).length === 0
-                                    ? "hsl(93, 7%, 10%)"
-                                    : "hsl(40, 75%, 62%)"
-                                }
-                                size={24}
-                              />
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </StyledTable>
-                  <PaginationWrapper>
-                    <Pagination
-                      total={totalJobs}
-                      current={currentPage}
-                      pageSize={pageSize}
-                      onChange={(current, pageSize) => {
-                        toggleLoadingStatus(true);
-                        updatePaginationOffset(pageSize * (current - 1));
-                        updateCurrentPage(current);
-                      }}
-                      hideOnSinglePage={true}
-                      locale={frFR}
-                      className="rc-pagination"
-                      prevIcon={
-                        <ChevronLeft color="hsl(238, 17%, 36%)" size={30} />
-                      }
-                      nextIcon={
-                        <ChevronRight color="hsl(238, 17%, 36%)" size={30} />
-                      }
-                      jumpPrevIcon={
-                        <ChevronsLeft color="hsl(238, 17%, 36%)" size={30} />
-                      }
-                      jumpNextIcon={
-                        <ChevronsRight color="hsl(238, 17%, 36%)" size={30} />
-                      }
-                    />
-                  </PaginationWrapper>
-                </>
-              ) : (
-                <div>Aucune annonce disponible</div>
-              )}
+              <StyledTable>
+                <thead>
+                  <tr>
+                    <th>Nom du médecin</th>
+                    <th>Prénom du médecin</th>
+                    <th>Du</th>
+                    <th>Au</th>
+                    <th>Ville</th>
+                    <th className="center">Consulter</th>
+                    <th className="center">Ajouter à mes favoris</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentPageJobs.map((job) => (
+                    <tr key={job._id}>
+                      <td>{job.recruiterSurname}</td>
+                      <td>{job.recruiterFirstname}</td>
+                      <td>{job.jobStartDate}</td>
+                      <td>{job.jobEndDate}</td>
+                      <td>{job.jobCity}</td>
+                      <td className="center">
+                        <Link className="i-flex" to={`/seeker/job/${job._id}`}>
+                          <File color="hsl(93, 7%, 10%)" size={24} />
+                        </Link>
+                      </td>
+                      <td className="center">
+                        <button
+                          className="i-flex"
+                          onClick={() => setNewFavoriteJob(job)}
+                          type="button"
+                        >
+                          <Star
+                            color={
+                              currentUser.favorites.filter(
+                                (f) => f._id === job._id
+                              ).length === 0
+                                ? "hsl(93, 7%, 10%)"
+                                : "hsl(40, 75%, 62%)"
+                            }
+                            size={24}
+                          />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </StyledTable>
+              <PaginationWrapper>
+                <Pagination
+                  total={totalJobs}
+                  current={currentPage}
+                  pageSize={pageSize}
+                  onChange={(current, pageSize) => {
+                    setLoadingStatus(true);
+                    updatePaginationOffset(pageSize * (current - 1));
+                    updateCurrentPage(current);
+                  }}
+                  hideOnSinglePage={true}
+                  locale={frFR}
+                  className="rc-pagination"
+                  prevIcon={
+                    <ChevronLeft color="hsl(238, 17%, 36%)" size={30} />
+                  }
+                  nextIcon={
+                    <ChevronRight color="hsl(238, 17%, 36%)" size={30} />
+                  }
+                  jumpPrevIcon={
+                    <ChevronsLeft color="hsl(238, 17%, 36%)" size={30} />
+                  }
+                  jumpNextIcon={
+                    <ChevronsRight color="hsl(238, 17%, 36%)" size={30} />
+                  }
+                />
+              </PaginationWrapper>
             </>
+          ) : (
+            <div>Aucune annonce disponible</div>
           )}
-          {/* {jobsDisplay === "list" && (
+        </>
+      )}
+      {/* {jobsDisplay === "list" && (
             <ul>
               <li>filtres</li>
               <li>carte Leaflet</li>
@@ -268,21 +265,11 @@ const SearchJob = (props) => {
               </Marker>
             </MapContainer>
           )} */}
-        </UserDesktopTemplate>
-      }
-      {...props}
-    />
+    </DashboardTemplate>
   );
 };
 
 export default SearchJob;
-
-// const StyledButton = styled.button`
-//   align-self: center;
-//   background: var(--color-secondary);
-//   color: var(--text-color);
-//   padding: 12px 18px;
-// `;
 
 const StyledTable = styled.table`
   background: var(--color-white);

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import styled from "styled-components/macro";
 import {
+  Button,
   TextInput,
   DateInput,
   RadioFieldsetInput,
@@ -106,30 +106,15 @@ const PostFormStep21 = ({
         />
       )}
       <div className="flex-asc flex flex-aic nfc-ml3">
-        <StyledButton
-          className="flex-asc"
-          type="button"
-          onClick={() => props.backToPrevious()}
-        >
+        <Button className="flex-asc" onClick={() => props.backToPrevious()}>
           Étape précédente
-        </StyledButton>
-        <StyledButton
-          className="flex-asc"
-          onClick={() => props.handleClick()}
-          type="button"
-        >
+        </Button>
+        <Button className="flex-asc" onClick={() => props.handleClick()}>
           Étape suivante
-        </StyledButton>
+        </Button>
       </div>
     </>
   );
 };
 
 export default PostFormStep21;
-
-const StyledButton = styled.button`
-  background: var(--color-primary);
-  color: var(text-color);
-  padding: 12px 18px;
-  border-radius: 2px;
-`;

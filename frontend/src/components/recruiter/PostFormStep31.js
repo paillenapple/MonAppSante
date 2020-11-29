@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components/macro";
+import { Button } from "./../business-components";
 import { formatDate } from "./../../utils/dataParsing";
 
 const PostFormStep31 = (props) => {
@@ -44,26 +44,15 @@ const PostFormStep31 = (props) => {
       </ul>
       <p>Souhaitez-vous publier cette annonce ?</p>
       <div className="flex-asc flex flex-aic nfc-ml3">
-        <StyledButton
-          className="flex-asc"
-          type="button"
-          onClick={() => props.backToPrevious()}
-        >
+        <Button className="flex-asc" onClick={() => props.backToPrevious()}>
           Étape précédente
-        </StyledButton>
-        <StyledButton className="flex-asc" type="submit">
+        </Button>
+        <Button className="flex-asc" type="submit">
           Publier
-        </StyledButton>
+        </Button>
       </div>
     </div>
   );
 };
 
 export default PostFormStep31;
-
-const StyledButton = styled.button`
-  background: var(--color-primary);
-  color: var(--text-color);
-  padding: 12px 18px;
-  border-radius: 2px;
-`;

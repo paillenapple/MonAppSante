@@ -7,7 +7,6 @@ exports.createPatient = (req, res, next) => {
     surname: parseSurname(req.body.surname),
     dob: req.body.dob,
   });
-  console.log(patient)
   patient
     .save()
     .then(() => res.status(201).json({ message: "Dossier patient créé !" }))
@@ -38,7 +37,6 @@ exports.readCurrentPagePatients = (req, res, next) => {
 exports.readOnePatient = (req, res, next) => {
   Patient.findOne({ _id: req.params.id })
     .then((patient) => {
-      console.log(patient.dob);
       res.status(200).json({
         patientId: patient._id,
         firstname: capFirstLetter(patient.firstname),

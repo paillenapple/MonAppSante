@@ -1,24 +1,19 @@
 import React from "react";
-import { MainTemplate, UserDesktopTemplate } from "../../templates";
+import { DashboardTemplate } from "../../templates";
 import PostForm from "./PostForm";
 
-const Assignments = (props) => {
+const Post = (props) => {
   const { pathname } = props.location;
-  const user = props.currentUser;
+  const { currentUser } = props;
   return (
-    <MainTemplate
-      component={
-        <UserDesktopTemplate
-          title="Déposer une annonce"
-          pathname={pathname}
-          user={user}
-        >
-          <PostForm />
-        </UserDesktopTemplate>
-      }
-      {...props}
-    />
+    <DashboardTemplate
+      title="Déposer une annonce"
+      pathname={pathname}
+      currentUser={currentUser}
+    >
+      <PostForm currentUser={currentUser} />
+    </DashboardTemplate>
   );
 };
 
-export default Assignments;
+export default Post;

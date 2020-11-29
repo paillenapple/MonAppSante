@@ -18,7 +18,7 @@ exports.signup = (req, res, next) => {
         firstname: capFirstLetter(req.body.firstname),
         surname: uppercase(req.body.surname),
         status: req.body.status,
-        city: uppercase(req.body.city)
+        city: uppercase(req.body.city),
       });
       user
         .save()
@@ -53,7 +53,7 @@ exports.login = (req, res, next) => {
             status: user.status,
             city: uppercase(user.city),
             favorites: user.favorites,
-            notifications: user.notifications
+            notifications: user.notifications,
           });
         })
         .catch((error) => res.status(500).json({ error }));
@@ -73,6 +73,22 @@ exports.setJobAsFavorite = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
+exports.removeNotifFromNotifications = (req, res, next) => {
+  const user = JSON.parse(req.body.user);
+  const notifToBeDeletedId = req.body.notifToBeDeletedId;
+  const notifications = user.notifications.filter(
+    (notif) => notif.body.jobId !== notifToBeDeletedId
+  );
+  User.updateOne(
+    { _id: user.id },
+    { notifications, _id: user.id }
+  )
+    .then(() => {
+      return res.status(200).json({ message: "Notification supprimée !" });
+    })
+    .catch((error) => res.status(400).json({ error }));
+};
+
 exports.getUserInfos = (req, res, next) => {
   User.findOne({ _id: req.params.id })
     .then((user) => {
@@ -87,7 +103,7 @@ exports.getUserInfos = (req, res, next) => {
         status: user.status,
         city: uppercase(user.city),
         favorites: user.favorites,
-        notifications: user.notifications
+        notifications: user.notifications,
       });
     })
     .catch((error) => res.status(404).json({ error }));
